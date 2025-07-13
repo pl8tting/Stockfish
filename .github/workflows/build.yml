@@ -1,0 +1,24 @@
+name: Build Stockfish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: sudo apt update && sudo apt install -y g++ make
+
+      - name: Build Stockfish
+        run: |
+          cd src
+          make build ARCH=x86-64-modern
+
+      - name: Upload binary
+        uses: actions/upload-artifact@v4
+        with:
+          name: stockfish-binary
+          path: src/stockfish
